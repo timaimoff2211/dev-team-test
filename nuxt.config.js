@@ -38,7 +38,13 @@ export default {
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/toast',
   ],
+
+  toast: {
+    position: 'top-center',
+    duration: 2000
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
