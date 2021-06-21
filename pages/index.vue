@@ -4,6 +4,15 @@
       <div class="col-3 mb-4" v-for="person in peopleList" :key="person.id">
         <div class="card person-card">
           <div class="person-card__img">
+            <div class="tags">
+              <div 
+                class="tag"
+                :style="{background: `#${tag.Color}`}"
+                v-for="tag, tagIdx in person.Tags" :key="tagIdx+tag.Color"
+              >
+                {{ tag.Name }}
+              </div>
+            </div>
             <img :src="person.Photo" :alt="person.Name" class="person-avtr">
           </div>
           <div class="person-card__name p-2">
@@ -91,10 +100,31 @@ export default {
 
   &__img {
     height: 35%;
+    position: relative;
+    overflow-x: hidden;
     img {
       width: 100%;
       height: 100%;
       border-radius: 0 0 10px 10px;
+    }
+
+    .tags {
+      position: absolute;
+      top: 10%;
+      right: 0;
+      .tag {
+        position: relative;
+        right: -50%;
+        cursor: pointer;
+        margin-bottom: 5px;
+        padding: 4px;
+        font-size: 12px;
+        border-radius: 4px;
+        transition: all .3s ease;
+        &:hover {
+          right: -10%;
+        }
+      }
     }
   }
 
