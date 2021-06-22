@@ -10,7 +10,7 @@ export const state = () => ({
 export const getters = {
   getPeopleList: s => s.people,
   getPagination: s => s.pagination,
-  getPerson: s => s.perosn
+  getPerson: s => s.person
 }
 
 export const mutations = {
@@ -21,7 +21,7 @@ export const mutations = {
     state.pagination = pagData
   },
   SET_PERSON(state, person) {
-    state.perosn = person
+    state.person = person
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="card person-card">
+  <div class="card person-card" :class="{'is-view': !isView}">
     <div class="person-card__img">
       <div class="tags">
         <div 
@@ -13,7 +13,8 @@
       <img :src="person.Photo" :alt="person.Name" class="person-avtr">
     </div>
     <div class="person-card__name p-2">
-      <p class="m-0 p-0">{{person.Name}}</p>
+      <p class="m-0 p-0" v-if="!isView" @click="$emit('onPersonClick', person.Id)">{{person.Name}}</p>
+      <p class="m-0 p-0" v-else>{{person.Name}}</p>
       <p class="m-0 p-0 person-card__name-pos">{{person.Title}}</p>
     </div>
     <div class="px-2 pb-3">
@@ -82,6 +83,10 @@ export default {
     person: {
       type: Object,
       required: true
+    },
+    isView: {
+      type: Boolean,
+      default: false
     }
   }
 }
@@ -92,8 +97,10 @@ export default {
 
 .person-card {
   height: 480px;
-  transition: all .2s ease-in;
-  &:hover {
+  &.is-view {
+    transition: all .2s ease-in;
+  }
+  &.is-view:hover {
     transform: scale(1.04);
   }
 
