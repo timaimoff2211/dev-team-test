@@ -59,16 +59,20 @@
           <div class="person-card__bottom px-2">
             <div class="row align-items-center justify-content-center">
               <div class="col-6">
-                <div class="color-block"></div>
+                <div class="percent-amount">35%</div>
+                <div class="color-block" style="background: #00d0d4; width: 35%"></div>
               </div>
               <div class="col-6">
-                <div class="color-block"></div>
+                <div class="percent-amount">95%</div>
+                <div class="color-block" style="background: #ffa500; width: 95%"></div>
               </div>
               <div class="col-6">
-                <div class="color-block"></div>
+                <div class="percent-amount">80%</div>
+                <div class="color-block" style="background: #ff98ff; width: 80%"></div>
               </div>
               <div class="col-6">
-                <div class="color-block"></div>
+                <div class="percent-amount">55%</div>
+                <div class="color-block" style="background: #0000ff; width: 55%"></div>
               </div>
             </div>
           </div>
@@ -97,6 +101,10 @@ export default {
 @import '~assets/scss/colors.scss';
 .person-card {
   height: 480px;
+  transition: all .2s ease-in;
+  &:hover {
+    transform: scale(1.04);
+  }
 
   &__img {
     height: 35%;
@@ -132,6 +140,7 @@ export default {
     color: $dark-color;
     font-size: 20px;
     font-weight: bold;
+    cursor: pointer;
 
     &-pos {
       color: $grey-color;
@@ -212,16 +221,23 @@ export default {
   }
 
   &__bottom {
-    width: 100px;
+    width: 150px;
     margin: 0 auto;
     .row {
       .col-6 {
+        position: relative;
+        display: flex;
+        justify-content: flex-end;
         padding: 2px;
         height: 50px;
+        .percent-amount {
+          position: absolute;
+          right: 5px;
+          top: 5px;
+        }
         .color-block {
           width: 100%;
           height: 100%;
-          background: red;
           border-radius: 4px;
         }
       }
