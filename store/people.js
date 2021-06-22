@@ -2,7 +2,8 @@ export const state = () => ({
   people: [],
   pagination: {
     perPage: 20,
-    page: 1
+    page: 1,
+    hasMore: true
   },
   person: null
 })
@@ -15,13 +16,18 @@ export const getters = {
 
 export const mutations = {
   SET_PEOPLE(state, list) {
-    state.people = list
+    state.people = state.people.concat(list)
   },
   SET_PAGINATION_DATA(state, pagData) {
-    state.pagination = pagData
+    for(let key in pagData) {
+      state.pagination[key] = pagData[key]
+    }
   },
   SET_PERSON(state, person) {
     state.person = person
+  },
+  SET_NO_HAS_MORE(state) {
+    state.pagination.hasMore = false
   }
 }
 
@@ -30,9 +36,15 @@ export const actions = {
     try {
       const res = await this.$axios.get(`people?pp=${state.pagination.perPage}&p=${state.pagination.page}`)
       commit('SET_PEOPLE', res.data)
+      if(!res.data.length) {
+        if(state.pagination.page > 1) {
+          this.app.$toast.info('There is no more...');
+        }
+        commit('SET_NO_HAS_MORE')
+      }
     } catch (error) {
       console.log(error.response);
-      this.app.$toast.error('Error! Something went wrong...')
+      this.app.$toast.error(error.response.data)
     }
   },
   async fetchPerson(ctx, id) {

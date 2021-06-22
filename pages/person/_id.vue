@@ -23,6 +23,14 @@ export default {
     ...mapGetters({
       person: 'people/getPerson'
     })
+  },
+  async fetch({store, app, params}) {
+    if(store.state.people.person === null) {
+      const res = await store.dispatch('people/fetchPerson', params.id);
+      if(res.status >= 400) {
+        app.$toast.error(res.data)
+      }
+    }
   }
 }
 </script>

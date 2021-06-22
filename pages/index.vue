@@ -24,7 +24,24 @@ export default {
       loading: false
     }
   },
+  mounted() {
+    document.addEventListener('scroll', this.onPageScroll)
+  },
   methods: {
+    async onPageScroll(e) {
+      const el = e.target.documentElement;
+      if((+el.scrollHeight) - (+el.clientHeight) === el.scrollTop) {
+        if(this.pagination.hasMore) {
+          console.log('load new');
+          this.loading = true;
+          this.$store.commit('people/SET_PAGINATION_DATA', {
+            page: this.pagination.page + 1 
+          })
+          await this.$store.dispatch('people/fetchPeopleList');
+          this.loading = false;
+        }
+      }
+    },
     async toPerson(id) {
       this.loading = true;
       const res = await this.$store.dispatch('people/fetchPerson', id);
@@ -39,11 +56,18 @@ export default {
   },
   computed: {
     ...mapGetters({
-      peopleList: 'people/getPeopleList'
+      peopleList: 'people/getPeopleList',
+      pagination: 'people/getPagination'
     })
   },
+  beforeDestroy() {
+    document.removeEventListener('scroll', this.onPageScroll);
+  },
   async fetch({store}) {
-    await store.dispatch('people/fetchPeopleList');
+    store.commit('people/SET_PAGINATION_DATA', {page: 1, hasMore: true})
+    if(!store.state.people.people.length) {
+      await store.dispatch('people/fetchPeopleList');
+    }
   }
 }
 </script>
