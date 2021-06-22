@@ -3,12 +3,14 @@ export const state = () => ({
   pagination: {
     perPage: 20,
     page: 1
-  }
+  },
+  person: null
 })
 
 export const getters = {
   getPeopleList: s => s.people,
-  getPagination: s => s.pagination
+  getPagination: s => s.pagination,
+  getPerson: s => s.perosn
 }
 
 export const mutations = {
@@ -17,6 +19,9 @@ export const mutations = {
   },
   SET_PAGINATION_DATA(state, pagData) {
     state.pagination = pagData
+  },
+  SET_PERSON(state, person) {
+    state.perosn = person
   }
 }
 
@@ -27,7 +32,16 @@ export const actions = {
       commit('SET_PEOPLE', res.data)
     } catch (error) {
       console.log(error.response);
-      this.$toast.error('Error! Something went wrong...')
+      this.app.$toast.error('Error! Something went wrong...')
+    }
+  },
+  async fetchPerson(ctx, id) {
+    try {
+      const res = await this.$axios.get(`people/${id}`)
+      ctx.commit('SET_PERSON', res.data)
+      return res;
+    } catch (error) {
+      return error.response
     }
   }
 }
